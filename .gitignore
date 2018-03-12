@@ -1,3 +1,5 @@
 lesson1/.idea/
+*.pyc
+.idea
 
-
+project/env/
