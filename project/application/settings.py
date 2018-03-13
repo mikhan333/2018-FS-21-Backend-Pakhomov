@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'questions.apps.QuestionsConfig',
 ]
 
-AUTH_USER_MODEL='core.User'
+AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

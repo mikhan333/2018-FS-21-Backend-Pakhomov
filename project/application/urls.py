@@ -30,10 +30,10 @@ urlpatterns = [
 
     url(r'^$', main_page),
 
-    url(r'^categories/(\d*)/$', category_detail),
+    url(r'^categories/(\d+)/$', category_detail),
     url(r'^categories/$', categories),
 
-    url(r'^questions/(\d*)/$', question_content),
+    url(r'^questions/(\d+)/$', question_content),
     url(r'^questions/ask/$', question_ask),
     url(r'^questions/$', questions),
 ]
