@@ -1,0 +1,9 @@
+{% extends "questions/base_questions.html" %}
+
+{% block title %}{{ question.name }}{% endblock %}
+
+{% block content %}
+    <div>Содержание: <b>{{ question.name }}</b>&mdash;{{ question.created|date:"Y:m:d" }}</div>
+    <br>
+    <a href="{% url "questions:question_list" %}">All questions</a>
+{% endblock %}

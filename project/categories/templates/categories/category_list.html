@@ -1,0 +1,10 @@
+{% extends "categories/base_categories.html" %}
+
+{% block title %}Category list{% endblock %}
+
+{% block content %}
+    {% for category in categories %}
+        <a href="{% url "categories:category_detail" category_id=category.id %}">{{ category.name }}</a>
+        {% if not forloop.last %},<br>{% endif %}
+    {% endfor %}
+{% endblock %}

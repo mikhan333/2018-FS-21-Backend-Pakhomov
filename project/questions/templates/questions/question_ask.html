@@ -1,0 +1,9 @@
+{% extends "questions/base_questions.html" %}
+
+{% block title %}Ask your question{% endblock %}
+
+{% block content %}
+    <div><b>write here</b></div>
+    <br>
+    <a href="{% url "questions:question_list" %}">All questions</a>
+{% endblock %}
