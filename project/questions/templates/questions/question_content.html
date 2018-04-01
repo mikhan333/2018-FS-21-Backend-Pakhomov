@@ -3,7 +3,20 @@
 {% block title %}{{ question.name }}{% endblock %}
 
 {% block content %}
-    <div>Содержание: <b>{{ question.name }}</b>&mdash;{{ question.created|date:"Y:m:d" }}</div>
+    <div>(
+        {% for category in categories %}
+            <a href="{% url "categories:category_detail" pk=category.id %}">{{ category.name }}</a>
+            {% if not forloop.last %}, {% endif %}
+        {% endfor %})
+    </div>
+    <div>Содержание: (<b>{{ question.name }}</b>&mdash;{{ question.created|date:"Y:m:d" }})<br>
+        {{ question.data }}
+    </div>
+    <br>
+
+    {% if question.author == user %}
+        <a href="{% url "questions:question_edit" pk=question.id %}">Edit question</a>
+    {% endif %}
     <br>
     <a href="{% url "questions:question_list" %}">All questions</a>
 {% endblock %}

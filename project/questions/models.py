@@ -21,6 +21,7 @@ class Question(models.Model):
     is_archive = models.BooleanField(default=False, verbose_name=u'Блок в архиве')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    data = models.TextField(default= True, verbose_name=u'Содержимое вопроса')
 
     class Meta:
         verbose_name=u'Вопрос'
@@ -29,3 +30,4 @@ class Question(models.Model):
 
     def __unicode__(self):
         return self.name
+

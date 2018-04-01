@@ -3,8 +3,36 @@
 {% block title %}Category list{% endblock %}
 
 {% block content %}
+    <div>
+        <form action="" method="get">
+            <!--<p>Sort:
+            <select name="sort">
+                <option {% if sort == "name" %}selected{% endif %}value="name">By name asc</option>
+                <option {% if sort == "-name" %}selected{% endif %}value="-name">By name desc</option>
+                <option {% if sort == "id" %}selected{% endif %}value="id">By id</option>
+
+            </select>
+            Search:
+            <input name="search"></p>-->
+
+
+
+            <!--<p>{{ categories_form.sort.label_tag }}{{ categories_form.sort }}
+            {% if categories_form.sort.errors %}
+                {{ categories_form.sort.errors }}
+            {% endif %}
+            {{ categories_form.search.label_tag }}{{ categories_form.search }}</p>-->
+
+
+            {{ categories_form }}
+            <button>Search</button>
+        </form>
+    </div>
+
+
+
     {% for category in categories %}
-        <a href="{% url "categories:category_detail" category_id=category.id %}">{{ category.name }}</a>
+        <a href="{% url "categories:category_detail" pk=category.id %}">{{ category.name }}</a>
         {% if not forloop.last %},<br>{% endif %}
     {% endfor %}
 {% endblock %}

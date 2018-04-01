@@ -3,9 +3,9 @@
 {% block title %}Question list{% endblock %}
 
 {% block content %}
-    <div><a href="{% url "questions:question_ask" %}">Ask question</a></div><br>
+    <div><a href="{% url "questions:question_create" %}">Create question</a></div><br>
     {% for question in questions %}
-        <a href="{% url "questions:question_content" question_id=question.id %}">{{ question.name }}</a>
+        <a href="{% url "questions:question_content" pk=question.id %}">{{ question.name }}</a>
         {% if not forloop.last %},<br>{% endif %}
     {% endfor %}
 {% endblock %}

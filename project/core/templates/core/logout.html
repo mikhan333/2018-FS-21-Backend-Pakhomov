@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+
+{% block titleAll %}Logout{% endblock %}
+
+{% block content %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form }}
+        <button>Logout.</button>
+    </form>
+{% endblock %}

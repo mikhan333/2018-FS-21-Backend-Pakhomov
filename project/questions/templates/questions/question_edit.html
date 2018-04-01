@@ -1,0 +1,24 @@
+{% extends "questions/base_questions.html" %}
+
+{% block title %}Edit your question: {{ question }}{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <!--<p>{{ categories_form.sort.label_tag }}{{ categories_form.sort }}
+            {% if categories_form.sort.errors %}
+                {{ categories_form.sort.errors }}
+            {% endif %}
+            {{ categories_form.search.label_tag }}{{ categories_form.search }}</p>-->
+
+        {{ form.name.label_tag }}{{ form.name }}<br>
+        {{ form.categories.label_tag }}{{ form.categories }}<br>
+        {{ form.data.label_tag }}{{ form.data }}<br>
+        {{ form.is_archive.label_tag }}{{ form.is_archive }}<br>
+        <input type="submit" value="Редактировать">
+    </form>
+    <div><b>write here</b></div>
+    <br>
+    <a href="{% url "questions:question_list" %}">All questions</a>
+{% endblock %}

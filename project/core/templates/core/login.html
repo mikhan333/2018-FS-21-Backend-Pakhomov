@@ -1,0 +1,13 @@
+{% extends "core/base.html" %}
+
+{% block titleAll %}Login{% endblock %}
+
+{% block content %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form }}
+        <button>Login.</button>
+    </form>
+    <br>
+    <div>Если вы не имеет аккаунта, то пройдите регистрацию: <a href="{% url "core:register" %}">ссылка</a></div>
+{% endblock %}

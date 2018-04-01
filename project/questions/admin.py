@@ -11,4 +11,6 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = 'name','author'
     search_fields = 'name', 'author__username'
     list_filter = 'is_archive',
+    raw_id_fields = ('author', )
+    filter_horizontal = ('categories', )
 

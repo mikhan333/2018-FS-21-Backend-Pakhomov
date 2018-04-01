@@ -5,4 +5,8 @@
 {% block content %}
     <a href="{% url "categories:category_list" %}">Category list</a><br>
     <a href="{% url "questions:question_list" %}">Question list</a>
+    <br>
+
+    <a href="{% url auth_url %}">{{ auth_url_name }}</a>
+
 {% endblock %}

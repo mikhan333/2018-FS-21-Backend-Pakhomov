@@ -1,0 +1,12 @@
+{% extends "core/base.html" %}
+
+{% block titleAll %}Profile{% endblock %}
+
+{% block content %}
+    <div>
+        {{ user }}
+    </div>
+
+    <br>
+    <div>Выход: <a href="{% url "core:logout" %}">ссылка</a></div>
+{% endblock %}
