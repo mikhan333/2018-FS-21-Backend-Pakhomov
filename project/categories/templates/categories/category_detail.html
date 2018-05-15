@@ -1,21 +1,27 @@
 {% extends "categories/base_categories.html" %}
-
-{% block title %}{% include "categories/widgets/category_title.html"%}{% endblock %}
+{% load crispy_forms_tags %}
+{% block header %}{% include "categories/widgets/category_title.html"%}{% endblock %}
 
 {% block content %}
-    <div>
-        <form action="" method="get">
-            {{ category_questions_form }}
-            <button>Search</button>
-        </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-9">
+                <b>Questions:</b>
+                {% for question in questions %}
+                    <div class="alert alert-secondary">
+                        <a href="{% url "questions:question_content" pk=question.id %}" class="alert-link">{{ question }}</a>
+                        <hr><p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-3">
+                <form action="" method="get">
+
+                        {{ category_questions_form|crispy }}
+                        <button type="submit" class="btn btn-secondary">Search.</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div>
-        <b>Questions:</b>
-        {% for question in questions %}
-            <div><a href="{% url "questions:question_content" pk=question.id %}">{{ question }}</a></div>
-        {% endfor %}
-    </div>
-    <br>
-    <a href="{% url "categories:category_list" %}">All categories</a>
 {% endblock %}

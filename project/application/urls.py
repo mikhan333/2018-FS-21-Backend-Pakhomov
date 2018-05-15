@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
@@ -24,3 +25,5 @@ urlpatterns = [
     url(r'^categories/', include('categories.urls', namespace='categories')),
     url(r'^questions/', include('questions.urls', namespace='questions')),
 ]
+
+

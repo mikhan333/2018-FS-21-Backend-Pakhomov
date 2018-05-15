@@ -1,18 +1,12 @@
 {% extends "questions/base_questions.html" %}
-
-{% block title %}Create your question{% endblock %}
+{% load crispy_forms_tags %}
+{% block header %}Create your question{% endblock %}
 
 {% block content %}
     <form action="" method="post">
         {% csrf_token %}
-        {{ form.name.label_tag }}{{ form.name }}<br>
-        {{ form.categories.label_tag }}{{ form.categories }}<br>
-
-        {{ form.data.label_tag }}{{ form.data }}<br>
-        {{ form.is_archive.label_tag }}{{ form.is_archive }}<br>
-        <input type="submit" value="Создать">
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Create.</button>
     </form>
-    <div><b>write here</b></div>
     <br>
-    <a href="{% url "questions:question_list" %}">All questions</a>
 {% endblock %}

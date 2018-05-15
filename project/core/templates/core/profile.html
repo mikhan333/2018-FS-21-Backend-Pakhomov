@@ -1,12 +1,15 @@
 {% extends "core/base.html" %}
 
-{% block titleAll %}Profile{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block title %}Profile{% endblock %}
+{% block header %}Your profile{% endblock %}
+
 
 {% block content %}
     <div>
         {{ user }}
     </div>
-
     <br>
-    <div>Выход: <a href="{% url "core:logout" %}">ссылка</a></div>
+    <div>Exit: <a href="{% url "core:logout" %}">Link</a></div>
 {% endblock %}

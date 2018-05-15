@@ -1,12 +1,18 @@
 {% extends "core/base.html" %}
 
-{% block titleAll %}Main page{% endblock %}
-
+{% block title %}Main{% endblock %}
+{% block header %}StackOverflow2{% endblock %}
+<!--titleAll-->
 {% block content %}
-    <a href="{% url "categories:category_list" %}">Category list</a><br>
-    <a href="{% url "questions:question_list" %}">Question list</a>
-    <br>
+    {% for question in questions %}
+        <div class="container">
+            <div class="alert alert-secondary">
+                <a href="{% url "questions:question_content" pk=question.id %}" class="alert-link">{{ question }}</a>
+                <hr>
+                <p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }}</p>
+            </div>
+        </div>
 
-    <a href="{% url auth_url %}">{{ auth_url_name }}</a>
+    {% endfor %}
 
 {% endblock %}

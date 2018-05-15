@@ -6,10 +6,12 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import FormView
 from .models import User
+from questions.models import Question
 
 def main_page(request):
     context = {}
     context['name'] = 'Main page'
+    context['questions'] = Question.objects.all().order_by("-created")[0:10]
     if request.user.is_authenticated():
         context['auth_url'] = 'core:profile'
         context['auth_url_name'] = 'Profile'

@@ -1,11 +1,16 @@
 {% extends "questions/base_questions.html" %}
 
-{% block title %}Question list{% endblock %}
+{% block header %}Question list{% endblock %}
 
 {% block content %}
-    <div><a href="{% url "questions:question_create" %}">Create question</a></div><br>
     {% for question in questions %}
-        <a href="{% url "questions:question_content" pk=question.id %}">{{ question.name }}</a>
-        {% if not forloop.last %},<br>{% endif %}
+        <div class="container">
+            <div class="alert alert-secondary">
+                <a href="{% url "questions:question_content" pk=question.id %}" class="alert-link">{{ question }}</a>
+                <hr>
+                <p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }}</p>
+            </div>
+        </div>
+
     {% endfor %}
 {% endblock %}

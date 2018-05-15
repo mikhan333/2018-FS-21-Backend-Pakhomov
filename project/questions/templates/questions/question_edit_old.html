@@ -1,0 +1,13 @@
+{% extends "questions/base_questions.html" %}
+{% load crispy_forms_tags %}
+{% block header %}Edit your question: {{ question }}{% endblock %}
+
+{% block content %}
+    <form action="" method="post" class="ajaxform" data-url="{% url "questions:question_edit" pk=question.id %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Edit.</button>
+
+    </form>
+    <br>
+{% endblock %}

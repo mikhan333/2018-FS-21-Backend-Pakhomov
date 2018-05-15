@@ -1,11 +1,133 @@
-<h1>Stackoverflow&mdash;{% block titleAll %}{% endblock %}</h1>
+{% load static %}
 
-<h2>{% block title %}{% endblock %}</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="csrf" content="{{ csrf_token }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static "chosen/chosen.css" %}">
+    <link rel="stylesheet" href="{% static "bootstrap/bootstrap-chosen.css" %}">
+    <link rel="stylesheet" href="{% static "bootstrap/dist/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "base.css" %}">
+
+
+    <title>{% block title %}Front{% endblock %} page of my Site</title>
+</head>
+<body>
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-info">
+        <a class="navbar-brand" href="{% url "core:main_page" %}"><img src="{% static "photo.png" %}" width="150" height="48" alt="500"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url "categories:category_list" %}">Categories</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url "questions:question_list" %}">Questions</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url "questions:question_create" %}">Create question</a>
+            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url "core:profile" %}">Profile</a>
+                </li>
+            {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url "core:login" %}">Login</a>
+                </li>
+            {% endif %}
+
+          </ul>
+
+          <!--<form class="form-inline mt-2 mt-md-2">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>-->
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+
+        <h1 class="mt-5">{% block header %}{% endblock %}</h1>
+        <p class="lead">
+            {% block content %}
+
+            {% endblock %}
+        </p>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Made in China. All rights reserved @stackoverflow</span>
+      </div>
+    </footer>
+
+
+    <script src="{% static "extralib/jquery-3.3.1.min.js" %}"></script>
+    <script src="{% static "extralib/popper.min.js" %}" ></script>
+    <script src="{% static "js/base.js" %}"></script>
+    <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "chosen/chosen.jquery.js" %}"></script>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<h1>Stackoverflow&mdash;{% block titleAll1 %}{% endblock %}</h1>
+
+<h2>{% block title1 %}{% endblock %}</h2>
 <div>
-    {% block content %}{% endblock %}
+    {% block content1 %}{% endblock %}
 </div>
 
 <br>
 <a href="{% url "core:main_page" %}">Main page</a>
 <br>
-<h3>Made in China</h3>
+<h3>Made in China</h3>-->
+
+
+
+
+
+

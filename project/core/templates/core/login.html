@@ -1,13 +1,19 @@
 {% extends "core/base.html" %}
+{% load crispy_forms_tags %}
 
-{% block titleAll %}Login{% endblock %}
+{% block title %}Login{% endblock %}
+{% block header %}Authorization{% endblock %}
 
 {% block content %}
-    <form method="post" action="">
-        {% csrf_token %}
-        {{ form }}
-        <button>Login.</button>
-    </form>
+    <div class="row">
+        <div class="col-6">
+            <form method="post" action="">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-primary">Login.</button>
+            </form>
+        </div>
+    </div>
     <br>
-    <div>Если вы не имеет аккаунта, то пройдите регистрацию: <a href="{% url "core:register" %}">ссылка</a></div>
+    <div>Если вы не имеетe аккаунта, то пройдите регистрацию: <a href="{% url "core:register" %}">ссылка</a></div>
 {% endblock %}

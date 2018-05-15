@@ -1,0 +1,7 @@
+{% for ans in answers %}
+    <div class="alert alert-primary" role="alert" >
+        <h4>Name: {{ ans.name }}</h4>{{ ans.data }}
+        <hr>
+        <p class="text-muted small mb-0">By "{{ ans.author }}" in {{ ans.created }}</p>
+    </div>
+{% endfor %}
