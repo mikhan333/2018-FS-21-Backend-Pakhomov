@@ -10,18 +10,18 @@
             {% if not forloop.last %}, {% endif %}
         {% endfor %})
     </div>
-    <!--<div>Содержание: (<b>{{ question.name }}</b>&mdash;{{ question.created|date:"Y:m:d" }})<br></div>-->
-        <div class="alert alert-info" role="alert" >
+        <div class="alert alert-info" role="alert">
             {{ question.data }}
             <hr>
             <div class="row">
                 <div class="col-11">
                     <p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }} |
-                        Likes <span id="likes-{{ question.id }}">{{ question.likes.count }}</span>
-                        <button class="btn ajaxlike" data-url="{% url "questions:question_likes" pk=question.id %}" data-questionid="{{ question.id }}">Лайкнуть</button>
+                        Likes: <span id="likes-{{ question.id }}">{{ question.likes.count }}</span>
+                        <button class="btn ajaxlike" data-url="{% url "questions:question_likes" pk=question.id %}" data-questionid="{{ question.id }}">Лайк!</button>
                     </p>
                 </div>
                 <div class="col-1">
+
                     {% if question.author == user %}
 
 

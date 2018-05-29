@@ -5,6 +5,25 @@ from django.db import models
 from django.conf import settings
 
 
+class QuestionQuerySet(models.QuerySet):
+    def annotate_manager(self):
+        qs = self.select_related('author')
+        qs = qs.prefetch_related('categories')
+        qs = qs.annotate(likes_count=models.Count('likes', distinct=True),
+                         answers_count=models.Count('answers', distinct=True))
+        return qs
+
+    def filt_del(self, autho):
+        if autho.is_authenticated():
+            return self.filter(models.Q(author=autho) | models.Q(is_archive=False))
+        else:
+            return self.filter(models.Q(is_archive=False))
+
+    def get_stats(self):
+        return self.aggregate(likes_count=models.Count('likes', distinct=True),
+                              answers_count=models.Count('answers', distinct=True))
+
+
 class Question(models.Model):
     name=models.CharField(max_length=255, verbose_name=u'Название вопроса')
     author = models.ForeignKey(
@@ -22,6 +41,8 @@ class Question(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     data = models.TextField(verbose_name=u'Содержимое вопроса')
+
+    objects = QuestionQuerySet.as_manager()
 
     class Meta:
         verbose_name=u'Вопрос'

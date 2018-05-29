@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, HttpResponse, reverse
 from .models import Category
+from django.db import models
 from django import forms
 from django.views.generic import ListView
 
@@ -17,8 +18,7 @@ class CategoriesListForm(forms.Form):
 
 def category_detail(request, pk=None):
     category = Category.objects.get(id=pk)
-    questions = category.questions.all().filter(is_archive=False)
-
+    questions = category.questions.all().filter(is_archive=False).select_related('author')
 
     form = CategoriesListForm(request.GET)
     if form.is_valid():
@@ -38,13 +38,36 @@ def category_detail(request, pk=None):
 
 
 
+class CategoryList(ListView):
+    template_name = 'categories/category_list.html'
+    context_object_name = 'categories'
+    model = Category
+
+    def get_queryset(self):
+
+        q=super(CategoryList, self).get_queryset()
+        self.form=CategoriesListForm(self.request.GET)
+
+        if self.form.is_valid():
+            if self.form.cleaned_data['sort']:
+                q = q.order_by(self.form.cleaned_data['sort'])
+            if self.form.cleaned_data['search']:
+                q=q.filter(title=self.form.cleaned_data['search'])
+        return q.annotate(questions_count = models.Count('questions__id', distinct=True),
+                          answers_count = models.Count('questions__answers__id', distinct=True),
+                          likes_count = models.Count('questions__likes', distinct=True))
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryList, self).get_context_data(**kwargs)
+        context['categories_form']=self.form
+        return context
 
 
-
-
+'''
 def category_list(request):
     categories = Category.objects.all()
-
+   # dop = Category.objects.all().annotate(question_count=models.Count('questions'))
+   # , answer_count = models.Count('questions__answers__id')
     form = CategoriesListForm(request.GET)
     if form.is_valid():
         data = form.cleaned_data
@@ -56,5 +79,7 @@ def category_list(request):
     context = {
         'categories': categories,
         'categories_form': form,
+   #     'dop': dop,
     }
     return render(request, 'categories/category_list.html', context)
+'''

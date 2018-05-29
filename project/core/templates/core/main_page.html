@@ -4,12 +4,24 @@
 {% block header %}StackOverflow2{% endblock %}
 <!--titleAll-->
 {% block content %}
+
     {% for question in questions %}
         <div class="container">
             <div class="alert alert-secondary">
                 <a href="{% url "questions:question_content" pk=question.id %}" class="alert-link">{{ question }}</a>
                 <hr>
-                <p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }}</p>
+                <div class="text-muted small mb-0 text row">
+                    <div class="text-left col-4">By "{{ question.author }}" in {{ question.created }}
+                    </div>
+                    <div class="text-left col-1">Likes {{ question.likes_count }} </div>
+                    <div class="text-right col-7">
+                    Categories:
+                    {% for category in question.categories.all %}
+                        <a href="{% url "categories:category_detail" pk=category.id %}">{{ category.name }}</a>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -8,7 +8,7 @@
             <div class="alert alert-secondary">
                 <a href="{% url "questions:question_content" pk=question.id %}" class="alert-link">{{ question }}</a>
                 <hr>
-                <p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }}</p>
+                <p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }} | Likes: {{ question.likes_count }}</p>
             </div>
         </div>
 

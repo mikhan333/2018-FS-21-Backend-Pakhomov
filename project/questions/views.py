@@ -13,15 +13,14 @@ class AnswerForm(forms.ModelForm):
 
 def question_content(request, pk):
     question = get_object_or_404(Question, id = pk)
-    answers = question.answers.all()
+    answers = question.answers.all().order_by('created').select_related('author')
 
     answer = Answer()
-
 
     context = {
         'categories': question.categories.all(),
         'question': question,
-        'answers': answers.order_by('created'),
+        'answers': answers,
     }
 
     if request.method == 'GET':
@@ -45,10 +44,6 @@ def question_content(request, pk):
 
 
 
-
-
-
-
 class QuestionCreate(CreateView):
 
     model = Question
@@ -61,6 +56,7 @@ class QuestionCreate(CreateView):
         return super(QuestionCreate, self).form_valid(form)
     def get_success_url(self):
         return reverse('questions:question_content', kwargs= { 'pk': self.object.pk})
+
 
 
 class QuestionEdit(UpdateView):
@@ -85,9 +81,10 @@ class QuestionEdit(UpdateView):
 
 def question_list(request):
     context = {
-        'questions': Question.objects.all().order_by("-created"),
+        'questions': Question.objects.all().order_by("-created").annotate_manager().filt_del(request.user),
     }
     return render(request, 'questions/question_list.html', context)
+
 
 
 def question_comments(request, pk):
@@ -100,12 +97,11 @@ def question_comments(request, pk):
     }
     return render(request, 'questions/commentsdiv.html', context)
 
+
+
 class QuestionLikeAjaxView(View):
-    # def dispatch(self, request, *args, **kwargs):
-    #     return super(QuestionLikeAjaxView, self).dispatch(request, *args, **kwargs)
 
     def dispatch(self, request, pk=None, *args, **kwargs):
-        # Забираем из базы пост, который собираются лайкнуть
         self.question_object = get_object_or_404(Question, id=pk)
         return super(QuestionLikeAjaxView, self).dispatch(request, *args, **kwargs)
 
@@ -117,46 +113,4 @@ class QuestionLikeAjaxView(View):
             like.save()
         return HttpResponse(Like.objects.filter(questions=self.question_object).count())
 
-
-'''
-
-class QuestionForm(forms.ModelForm):
-    class Meta:
-        model=Question
-        fields = 'name', 'categories', 'is_archive', 'data'
-
-def question_create(request):
-    question=Question()
-
-    if request.method == 'GET':
-        form = QuestionForm(instance=question)
-        return render(request, 'questions/question_create.html', {'form' : form})
-
-    elif request.method == 'POST':
-        form=QuestionForm(request.POST, instance = question)
-        if form.is_valid():
-            question=form.save(commit=False)
-            question.author=request.user
-            question.save()
-            return redirect('questions:question_content', pk = question.id)
-        else:
-            return render(request, 'questions/question_create.html', {'form': form})
-            
-            
-def question_edit(request, pk = None):
-    question = get_object_or_404(Question, id = pk, author = request.user)
-
-    if request.method == 'GET':
-        form = QuestionForm(instance=question)
-        return render(request, 'questions/question_edit.html', {'form' : form, 'question': question })
-
-    elif request.method == 'POST':
-        form=QuestionForm(request.POST, instance=question)
-        if form.is_valid():
-            question = form.save()
-            return redirect('questions:question_content', pk = question.pk)
-        else:
-            return render(request, 'questions/question_edit.html', {'form': form, 'question': question})
-
-'''
 

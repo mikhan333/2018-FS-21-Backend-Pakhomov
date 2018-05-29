@@ -8,7 +8,8 @@
 
 {% block content %}
     <div>
-        {{ user }}
+        <p>Now on this site you created: {{ quest.question_count }} {{ user.questions_set.all.get_stats.likes_count }} </p>
+        Your login: {{ user }}
     </div>
     <br>
     <div>Exit: <a href="{% url "core:logout" %}">Link</a></div>

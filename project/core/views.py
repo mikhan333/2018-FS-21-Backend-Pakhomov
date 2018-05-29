@@ -7,11 +7,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import FormView
 from .models import User
 from questions.models import Question
+from django.db import models
 
 def main_page(request):
     context = {}
     context['name'] = 'Main page'
-    context['questions'] = Question.objects.all().order_by("-created")[0:10]
+    questions = Question.objects.all().filt_del(request.user).order_by("-created")[0:10].annotate_manager()
+    context['questions'] = questions
     if request.user.is_authenticated():
         context['auth_url'] = 'core:profile'
         context['auth_url_name'] = 'Profile'
@@ -49,5 +51,6 @@ def register(request):
             return render(request, 'core/register.html', {'form': form})
 
 def profile(request):
-    context = {}
+    quest = Question.objects.filter(author=request.user).aggregate(question_count=models.Count('id', distinct=True))
+    context = {'quest': quest,}
     return render(request, 'core/profile.html', context)

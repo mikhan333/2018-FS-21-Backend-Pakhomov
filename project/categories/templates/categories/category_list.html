@@ -7,8 +7,12 @@
         <div class="row">
             <div class="col-9">
                 {% for category in categories %}
-                <div class="alert alert-dark" role="alert" >
-                <a href="{% url "categories:category_detail" pk=category.id %}" class="alert-link">{{ category.name }}</a>
+                <div class="alert alert-dark row" role="alert" >
+                    <div class="col-12">
+                        <a href="{% url "categories:category_detail" pk=category.id %}" class="alert-link">{{ category.name }}</a>
+                        <hr>
+                        <p class="text-muted small mb-0">Вопросов: {{ category.questions_count }}; Ответов: {{ category.answers_count }}</p>
+                    </div>
                 </div>
                 <!--{% if not forloop.last %},<br>{% endif %}-->
                 {% endfor %}
