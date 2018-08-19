@@ -52,7 +52,7 @@ class CategoryList(ListView):
             if self.form.cleaned_data['sort']:
                 q = q.order_by(self.form.cleaned_data['sort'])
             if self.form.cleaned_data['search']:
-                q=q.filter(title=self.form.cleaned_data['search'])
+                q=q.filter(name=self.form.cleaned_data['search'])
         return q.annotate(questions_count = models.Count('questions__id', distinct=True),
                           answers_count = models.Count('questions__answers__id', distinct=True),
                           likes_count = models.Count('questions__likes', distinct=True))
