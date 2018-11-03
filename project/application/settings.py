@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
+import os, sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'categories.apps.CategoriesConfig',
     'questions.apps.QuestionsConfig',
     'crispy_forms',
+    'social_django',
     'debug_toolbar',
+    'adjacent',
 ]
 
 AUTH_USER_MODEL = 'core.User'
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 
 ]
 
@@ -74,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
             ],
         },
     },
@@ -95,6 +99,10 @@ DATABASES = {
     }
 }
 
+TESTING = 'test' in sys.argv
+
+if TESTING:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -131,13 +139,48 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
+MEDIA_ROOT = os.path.join(BASE_DIR, 'storage', 'media')
+MEDIA_URL = '/media/'
 
+#STATIC_ROOT = os.path.join(BASE_DIR,'storage', 'static')
 STATIC_URL = '/static/'
+#STATICFILES_DIRS = ( 'core/static', )
 
-CRISPY_TEMPLATE_PACK='bootstrap4'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#STATICFILES_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+AWS_S3_ENDPOINT_URL = 'http://hb.bizmrg.com'
+AWS_ACCESS_KEY_ID = 'oTC6VXY9PbddNAUBCwU26f'
+AWS_SECRET_ACCESS_KEY = 'aGcE4ZeLzioS466L1CBmqnucETsm6rg269K93PPzUDqw'
+AWS_STORAGE_BUCKET_NAME = 'backend_mipt'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'core:main_page'
 
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'core:main_page'
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '6723063'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'I5gdq5oA8RS4jHVi1Fl5'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+
+SOCIAL_AUTH_FACEBOOK_KEY = '2216255922032592'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'f29118aa3df30514a66f97731950d646'
+
+CENTRIFUGE_ADDRESS = 'http://localhost:9000'
+CENTRIFUGE_SECRET = 'ee7ac6df-a0fc-4bfc-a122-9918c4ce9cdd'
+CENTRIFUGE_TIMEOUT = 10
+
+LOGIN_REDIRECT_URL = '/'

@@ -1,0 +1,7 @@
+{
+  "secret": "ee7ac6df-a0fc-4bfc-a122-9918c4ce9cdd",
+  "admin_password": "76mikh21",
+  "admin_secret": "6cbe3f65-518b-45ce-a0bf-21189a9175f4",
+  "port": 9000,
+  "api_insecure": true
+}

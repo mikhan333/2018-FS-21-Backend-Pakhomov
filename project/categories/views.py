@@ -6,6 +6,9 @@ from .models import Category
 from django.db import models
 from django import forms
 from django.views.generic import ListView
+from django.core.serializers import serialize
+from jsonrpc import jsonrpc_method
+from django.http import JsonResponse
 
 class CategoriesListForm(forms.Form):
     sort = forms.ChoiceField(choices=(
@@ -16,6 +19,7 @@ class CategoriesListForm(forms.Form):
     search = forms.CharField(required=False)
 
 
+@jsonrpc_method('api.category_detail')
 def category_detail(request, pk=None):
     category = Category.objects.get(id=pk)
     questions = category.questions.all().filter(is_archive=False).select_related('author')
@@ -31,9 +35,9 @@ def category_detail(request, pk=None):
     context={
         'category': category,
         'questions': questions,
-        'category_questions_form': form
+        #'category_questions_form': form,
     }
-
+    #return JsonResponse(context)
     return render(request, 'categories/category_detail.html', context)
 
 

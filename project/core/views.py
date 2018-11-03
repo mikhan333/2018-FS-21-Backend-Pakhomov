@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.views.generic.edit import FormView
 from .models import User
 from questions.models import Question
@@ -35,9 +35,14 @@ class Logout(LogoutView):
 class RegisterForm(UserCreationForm):
     template_name = 'core/register.html'
 
+    class Meta:
+        model = User
+        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
+
 
 def register(request):
     us = User()
+
     if request.method == 'GET':
         form = RegisterForm(instance = us)
         return render(request, 'core/register.html', {'form' : form})
@@ -52,5 +57,10 @@ def register(request):
 
 def profile(request):
     quest = Question.objects.filter(author=request.user).aggregate(question_count=models.Count('id', distinct=True))
-    context = {'quest': quest,}
+    questions = Question.objects.filter(author=request.user)
+    context = {
+        'quest': quest,
+        'questions': questions,
+        'client': request.user,
+    }
     return render(request, 'core/profile.html', context)

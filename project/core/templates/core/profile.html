@@ -8,9 +8,24 @@
 
 {% block content %}
     <div>
-        <p>Now on this site you created: {{ quest.question_count }} {{ user.questions_set.all.get_stats.likes_count }} </p>
-        Your login: {{ user }}
+        <p>Now on this site you created: {{ quest.question_count }} questions {{ user.questions_set.all.get_stats.likes_count }} </p>
+
+    {% for question in questions %}
+        <div class="container">
+            <div class="alert alert-secondary">
+                <a href="{% url "questions:question_content" pk=question.id %}" class="alert-link">{{ question }}</a>
+                <hr>
+                <p class="text-muted small mb-0">By "{{ question.author }}" in {{ question.created }} | Likes: {{ question.likes_count }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    <br>
+        <p>Your name: {{ client.first_name }} {{ client.last_name }}</p>
+    {% if client.email %}
+        <p>Your email: {{ client.email }}</p>
+    {% endif %}
     </div>
+
     <br>
     <div>Exit: <a href="{% url "core:logout" %}">Link</a></div>
 {% endblock %}

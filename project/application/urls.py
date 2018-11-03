@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from sys import path
+
 from django.conf.urls import url, include
 from django.contrib import admin
 
@@ -26,6 +28,9 @@ urlpatterns = [
     url(r'', include('core.urls', namespace='core')),
     url(r'^categories/', include('categories.urls', namespace='categories')),
     url(r'^questions/', include('questions.urls', namespace='questions')),
+
+    url('', include('social_django.urls')),
+
 ]
 
 if settings.DEBUG:

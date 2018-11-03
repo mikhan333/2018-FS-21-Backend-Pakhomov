@@ -24,6 +24,11 @@ class QuestionQuerySet(models.QuerySet):
                               answers_count=models.Count('answers', distinct=True))
 
 
+class QuestionFile(models.Model):
+    file_mime = models.CharField(max_length=72)
+    file_key = models.CharField(max_length=72)
+    file_content = models.FileField(null = True, upload_to="files")
+
 class Question(models.Model):
     name=models.CharField(max_length=255, verbose_name=u'Название вопроса')
     author = models.ForeignKey(
@@ -41,6 +46,9 @@ class Question(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     data = models.TextField(verbose_name=u'Содержимое вопроса')
+
+    photo = models.FileField(null=True, upload_to="photos")
+    files = models.ManyToManyField( QuestionFile)
 
     objects = QuestionQuerySet.as_manager()
 

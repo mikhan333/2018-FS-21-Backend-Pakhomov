@@ -11,7 +11,10 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button type="submit" class="btn btn-primary">Login.</button>
+                <a href="/login/vk-oauth2"><img src="/static/vk_auth.jpg" width="45" class="avatar-3" data-toggle="tooltip" title="Login via VKontakte"></a>
+                <a href="/login/facebook"><img src="/static/facebook_auth.png" width="45" class="avatar-3" data-toggle="tooltip" title="Login via Facebook"></a>
             </form>
+
         </div>
     </div>
     <br>

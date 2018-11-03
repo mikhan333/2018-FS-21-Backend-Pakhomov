@@ -2,6 +2,25 @@
 
 $(document).ready(
     function(){
+
+        $('.answers').each(function () {
+            console.log("+");
+            const obj = $(this);
+            obj.load(obj.data('url'));
+
+            var centrifuge = new Centrifuge('http://localhost:9000/connection/sockjs', {debug: true});
+            centrifuge.setToken(obj.data('token'));
+            centrifuge.subscribe('update_answers', function (message) {
+                if (obj.data('pk') === message.data.answers) {
+                    obj.load(obj.data('url'));
+                }
+            });
+
+            centrifuge.connect();
+        });
+
+
+
         $('#id_categories').chosen();
         window.setInterval(
             function() {
@@ -53,22 +72,6 @@ $(document).ready(
             $.ajax({url: $(form).attr('data-url'), method: 'post', data: $(form).serialize()}).done(function(data, status, response) { location.reload($(form).attr('data-url')) });
             return false;
         });
-
-        /*$('p').click(function() {
-            alert(this);
-        });
-
-        $(document).on('click', 'p', function() {
-            alert(this);
-        })*/
-
-        /*$(document).on('submit', '.ajaxform', function() {
-            $.ajax(
-                $(this).data('url'),
-                $(this).serialize()
-            )
-
-        });*/
     }
 
 

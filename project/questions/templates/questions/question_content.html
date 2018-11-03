@@ -1,6 +1,7 @@
 {% extends "questions/base_questions.html" %}
 {% load crispy_forms_tags %}
 {% block header %}{{ question.name }}{% endblock %}
+{% load static %}
 
 {% block content %}
     <div>(From categories:
@@ -55,9 +56,36 @@
 
     <br>
     <h3>Answers:</h3>
-    <div class="autoload" data-url="{% url "questions:question_comments" pk=question.id %}">
-        {%  include 'questions/commentsdiv.html' %}
-    </div>
+{#    <div class="autoload" data-url="{% url "questions:question_comments" pk=question.id %}">#}
+{#        {%  include 'questions/commentsdiv.html' %}#}
+{#    </div>#}
+
+    <script src="{% static "sockjs/sockjs.js" %}"></script>
+    <script src="{% static "centrifuge/centrifuge.js" %}"></script>
+
+    <div class="answers"
+         data-url="{% url "questions:question_comments" pk=question.id %}"
+         data-pk="{{ question.id }}"
+         data-token="{{ token }}"
+    ></div>
+
+
+
+{#    <script>#}
+{#        console.log("im done");#}
+{#        var centrifuge = new Centrifuge('http://localhost:9000/connection/sockjs', {debug: true});#}
+{#        centrifuge.setToken('{{ token }}');#}
+{#        centrifuge.subscribe('update_answers', function (message) {#}
+{#                if (obj.data('pk') === message.data.answers) {#}
+{#                    obj.load(obj.data('url'));#}
+{#                }#}
+{#            });#}
+{#        centrifuge.on('connect', function(context){#}
+{#           console.log(context);#}
+{#        });#}
+{#        centrifuge.connect();#}
+{#        console.log("second done");#}
+{#    </script>#}
     <br>
 
     <div>
