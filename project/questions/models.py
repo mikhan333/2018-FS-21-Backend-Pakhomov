@@ -30,7 +30,7 @@ class QuestionFile(models.Model):
     file_content = models.FileField(null = True, upload_to="files")
 
 class Question(models.Model):
-    name=models.CharField(max_length=255, verbose_name=u'Название вопроса')
+    name = models.CharField(max_length=255, verbose_name=u'Название вопроса')
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='questions',

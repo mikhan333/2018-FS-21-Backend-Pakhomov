@@ -9,6 +9,7 @@ from django.views.generic import ListView
 from django.core.serializers import serialize
 from jsonrpc import jsonrpc_method
 from django.http import JsonResponse
+from django.views.generic import UpdateView, CreateView
 
 class CategoriesListForm(forms.Form):
     sort = forms.ChoiceField(choices=(
@@ -56,7 +57,7 @@ class CategoryList(ListView):
             if self.form.cleaned_data['sort']:
                 q = q.order_by(self.form.cleaned_data['sort'])
             if self.form.cleaned_data['search']:
-                q=q.filter(name=self.form.cleaned_data['search'])
+                q = q.filter(name=self.form.cleaned_data['search'])
         return q.annotate(questions_count = models.Count('questions__id', distinct=True),
                           answers_count = models.Count('questions__answers__id', distinct=True),
                           likes_count = models.Count('questions__likes', distinct=True))
@@ -66,6 +67,20 @@ class CategoryList(ListView):
         context['categories_form']=self.form
         return context
 
+
+class CategoryCreate(CreateView):
+
+    model = Category
+    fields = 'name',
+    context_object_name = 'category'
+    template_name = 'categories/category_create.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(CategoryCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('categories:category_detail', kwargs={'pk': self.object.pk})
 
 '''
 def category_list(request):

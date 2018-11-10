@@ -8,7 +8,7 @@ class CategoryQuerySet(models.QuerySet):
     pass
 
 class Category(models.Model):
-    name=models.CharField(max_length=255, verbose_name=u'Название категории')
+    name = models.CharField(max_length=255, verbose_name=u'Название категории')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

@@ -1,0 +1,33 @@
+version: '3.3'
+
+services:
+  server-backend:
+    depends_on: [ server-mysql ]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+    - .:/app
+    ports:
+    - "8000:8000"
+
+    environment:
+      DB_NAME: sql_db
+      DB_HOST: server-mysql
+      DB_USER: sql_user
+      DB_PASSWORD: sql_pass
+
+  server-mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+    - .prog:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sql_root_pass
+      MYSQL_DATABASE: sql_db
+      MYSQL_USER: sql_user
+      MYSQL_PASSWORD: sql_pass
+
+

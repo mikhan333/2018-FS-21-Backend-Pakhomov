@@ -80,7 +80,7 @@ class TestQuestion(TestCase):
             questions[i] = RandomQuestionFactory.create()
 
         response = self.client.get('/questions/')
-        content = json.loads(response.content)
+        # content = json.loads(response.content)
 
         self.assertEqual(Question.objects.all().count() - 1, count)
         for i in range(count):

@@ -1,0 +1,12 @@
+{% extends "categories/base_categories.html" %}
+{% load crispy_forms_tags %}
+{% block header %}Create your category{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Create.</button>
+    </form>
+    <br>
+{% endblock %}

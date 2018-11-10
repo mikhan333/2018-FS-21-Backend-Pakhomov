@@ -7,10 +7,6 @@ from django import forms
 from django.views.generic import UpdateView, CreateView, DetailView, View
 from django.core.files.base import ContentFile
 
-from adjacent.utils import get_connection_parameters
-from adjacent.client import Client
-
-
 from django.shortcuts import render
 from jsonrpc import jsonrpc_method
 from jsonrpc.exceptions import Error
@@ -25,7 +21,6 @@ def upload_file(request, file_content, file_name):
     key = generate_key(file_name)
     quest = Question.objects.all().first()
 
-
     quest.photo.save("{}/{}".format(quest.id, key), ContentFile(content.encode('utf-8')))
     return content.decode('utf8')
 
@@ -38,11 +33,8 @@ def generate_key(filename):
     return h.hexdigest()
 
 
-
 from adjacent.utils import get_connection_parameters
 from adjacent.client import Client
-import jwt
-import time
 
 
 @jsonrpc_method('api.question_content')
@@ -75,7 +67,7 @@ def question_content(request, pk):
             context['form'] = form
 
             client = Client()
-            client.publish('update_answers', {"answers": question.pk})
+            client.publish('answers_question_{}'.format(question.pk), {})
             client.send()
 
             return redirect('questions:question_content', pk=question.id)
