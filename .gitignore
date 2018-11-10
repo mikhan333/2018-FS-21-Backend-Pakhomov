@@ -2,4 +2,8 @@ lesson1/.idea/
 *.pyc
 .idea
 
+project/.prog/
 project/env/
+project/storage/
+lesson1/
+venv/
