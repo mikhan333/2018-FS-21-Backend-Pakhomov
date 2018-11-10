@@ -5,5 +5,6 @@ lesson1/.idea/
 project/.prog/
 project/env/
 project/storage/
+project/.coverage
 lesson1/
 venv/
