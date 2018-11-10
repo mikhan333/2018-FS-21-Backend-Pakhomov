@@ -61,8 +61,8 @@ def question_content(request, pk):
         answer.answers = question
         form = AnswerForm(request.POST, instance = answer)
         if form.is_valid():
-            answer=form.save(commit=False)
-            answer.author=request.user
+            answer = form.save(commit=False)
+            answer.author = request.user
             answer.save()
             context['form'] = form
 

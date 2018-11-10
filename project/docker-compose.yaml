@@ -30,4 +30,16 @@ services:
       MYSQL_USER: sql_user
       MYSQL_PASSWORD: sql_pass
 
+  server-centrifugo:
+    image: centrifugo/centrifugo:latest
+    command: centrifugo -c /centrifugo/centrifugo.json --admin
+    volumes:
+    - ./config.json:/centrifugo/centrifugo.json
+    restart: always
+    ports:
+      - 9000:9000
 
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
