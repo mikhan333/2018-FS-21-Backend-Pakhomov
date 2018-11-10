@@ -25,7 +25,10 @@ SECRET_KEY = '3lwokij7)iqm=m+_786lmbhkd-9(7)^auz$_pmtgno#bg5&ivb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    'pakhomov.chickenkiller.com',
+]
 
 
 # Application definition
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'categories.apps.CategoriesConfig',
     'questions.apps.QuestionsConfig',
+    'letsencrypt',
     'crispy_forms',
     'social_django',
     'debug_toolbar',
@@ -169,6 +173,10 @@ LOGIN_REDIRECT_URL = 'core:main_page'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'core:main_page'
 
+ALLOWED_HOSTS = [
+    'pakhomov.chickenkiller.com',
+    'localhost',
+]
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',

@@ -21,7 +21,6 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls import include, url
 
-
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
@@ -30,6 +29,8 @@ urlpatterns = [
     url(r'^questions/', include('questions.urls', namespace='questions')),
 
     url('', include('social_django.urls')),
+
+    url(r'^\.well-known/', include('letsencrypt.urls')),
 
 ]
 
