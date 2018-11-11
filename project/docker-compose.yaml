@@ -34,7 +34,7 @@ services:
     image: centrifugo/centrifugo:latest
     command: centrifugo -c /centrifugo/centrifugo.json --admin
     volumes:
-    - ./config.json:/centrifugo/centrifugo.json
+    - ./config/centrifugo.json:/centrifugo/centrifugo.json
     restart: always
     ports:
       - 9000:9000
@@ -43,3 +43,14 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+    - 8080:8080
+    links:
+    - server-backend
+    - server-centrifugo
