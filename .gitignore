@@ -2,7 +2,7 @@ lesson1/.idea/
 *.pyc
 .idea
 
-project/.prog/
+project/.sql_data/
 project/env/
 project/storage/
 project/.coverage

@@ -28,8 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     'pakhomov.chickenkiller.com',
+    'server-backend',
 ]
-
 
 # Application definition
 
@@ -173,10 +173,6 @@ LOGIN_REDIRECT_URL = 'core:main_page'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'core:main_page'
 
-ALLOWED_HOSTS = [
-    'pakhomov.chickenkiller.com',
-    'localhost',
-]
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.vk.VKOAuth2',
