@@ -37,20 +37,23 @@ services:
     - ./config/centrifugo.json:/centrifugo/centrifugo.json
     restart: always
     ports:
-      - 9000:9000
+    - 9000:9000
 
     ulimits:
       nofile:
         soft: 65536
         hard: 65536
 
-  nginx:
+  server-nginx:
     image: nginx:latest
     restart: always
     volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./config/nginx.conf:/etc/nginx/nginx.conf
+    expose:
+    - 8080
     ports:
-    - 8080:8080
+    - 80:8080
+    depends_on: [ server-backend ]
     links:
     - server-backend
     - server-centrifugo
