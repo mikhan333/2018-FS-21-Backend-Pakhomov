@@ -13,5 +13,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/comments/$', questions_views.question_comments, name='question_comments'),
     url(r'^(?P<pk>\d+)/likes/$', questions_views.QuestionLikeAjaxView.as_view(), name='question_likes'),
 
+    url(r'^question_list_front/$', questions_views.question_list_front, name='question_list_front'),
+
     #url(r'^api/$', jsonrpc_site.dispatch, name='api'),
 ]

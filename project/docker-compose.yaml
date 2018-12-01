@@ -3,8 +3,9 @@ version: '2'
 services:
   server-backend:
     depends_on: [ server-mysql ]
-    build: .
-    image: mikhan333/server-backend:1.2
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
     - .:/app

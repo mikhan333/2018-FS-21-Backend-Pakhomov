@@ -27,10 +27,45 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
+    '127.0.0.1',
     'pakhomov.chickenkiller.com',
     'server-backend',
+    'localhost:3000',
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    'pakhomov.chickenkiller.com',
+    'localhost:3000',
+)
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'Access-Control-Allow-Origin',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
+CSRF_TRUSTED_ORIGINS = (
+    'pakhomov.chickenkiller.com',
+    'localhost:3000',
+)
+
+CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,6 +83,7 @@ INSTALLED_APPS = [
     'social_django',
     'debug_toolbar',
     'adjacent',
+    'corsheaders',
 ]
 
 AUTH_USER_MODEL = 'core.User'
@@ -61,7 +97,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
+    'django.middleware.common.CommonMiddleware',
 
 ]
 

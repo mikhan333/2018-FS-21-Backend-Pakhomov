@@ -8,8 +8,11 @@ from django import forms
 from django.views.generic import ListView
 from django.core.serializers import serialize
 from jsonrpc import jsonrpc_method
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views.generic import UpdateView, CreateView
+import json
+from django.views.decorators.csrf import csrf_exempt
+
 
 class CategoriesListForm(forms.Form):
     sort = forms.ChoiceField(choices=(
@@ -33,14 +36,21 @@ def category_detail(request, pk=None):
         if data['search']:
             questions = questions.filter(name__icontains=data['search'])
 
-    context={
+    context = {
         'category': category,
         'questions': questions,
-        #'category_questions_form': form,
+        'category_questions_form': form,
     }
-    #return JsonResponse(context)
+    # return json.loads(serialize('json', [context['category']]))
     return render(request, 'categories/category_detail.html', context)
 
+
+def category_list_front(request):
+    categories = Category.objects.all()
+    context = {
+       'categories': serialize('json', categories),
+    }
+    return JsonResponse(context)
 
 
 class CategoryList(ListView):
@@ -50,8 +60,8 @@ class CategoryList(ListView):
 
     def get_queryset(self):
 
-        q=super(CategoryList, self).get_queryset()
-        self.form=CategoriesListForm(self.request.GET)
+        q = super(CategoryList, self).get_queryset()
+        self.form = CategoriesListForm(self.request.GET)
 
         if self.form.is_valid():
             if self.form.cleaned_data['sort']:
@@ -66,6 +76,25 @@ class CategoryList(ListView):
         context = super(CategoryList, self).get_context_data(**kwargs)
         context['categories_form']=self.form
         return context
+
+
+@csrf_exempt
+def category_create_front(request):
+
+    if request.method == 'POST':
+        str = request.body.__str__()
+        str = str.replace(' ', '')
+        start = str.find("name=")+15
+        str = str[start:]
+        end = str.find("---") - 2
+        name = str[:end]
+        if Category.objects.filter(name=name).exists():
+            return HttpResponseForbidden('error')
+        else:
+            category = Category()
+            category.name = name
+            category.save()
+            return HttpResponse('OK')
 
 
 class CategoryCreate(CreateView):

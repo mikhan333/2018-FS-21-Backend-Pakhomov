@@ -12,7 +12,13 @@ from jsonrpc import jsonrpc_method
 from jsonrpc.exceptions import Error
 from django.http import JsonResponse
 from django.core.serializers import serialize
-import json, base64
+import json
+from jsonrpc import jsonrpc_method
+import base64
+import hashlib
+from adjacent.utils import get_connection_parameters
+from adjacent.client import Client
+import cProfile
 
 
 @jsonrpc_method('api.upload_file')
@@ -24,8 +30,6 @@ def upload_file(request, file_content, file_name):
     quest.photo.save("{}/{}".format(quest.id, key), ContentFile(content.encode('utf-8')))
     return content.decode('utf8')
 
-import base64
-import hashlib
 
 def generate_key(filename):
     h = hashlib.new('md5')
@@ -33,13 +37,9 @@ def generate_key(filename):
     return h.hexdigest()
 
 
-from adjacent.utils import get_connection_parameters
-from adjacent.client import Client
-
-
 @jsonrpc_method('api.question_content')
 def question_content(request, pk):
-    question = get_object_or_404(Question, id = pk)
+    question = get_object_or_404(Question, id=pk)
     answers = question.answers.all().order_by('created').select_related('author')
 
     answer = Answer()
@@ -51,15 +51,15 @@ def question_content(request, pk):
          'token': get_connection_parameters(request.user)['token'],
     }
 
-
     if request.method == 'GET':
         form = AnswerForm(instance=answer)
         context['form'] = form
+        # return json.loads(serialize('json', [context['question']]))
         return render(request, 'questions/question_content.html', context)
 
     elif request.method == 'POST':
         answer.answers = question
-        form = AnswerForm(request.POST, instance = answer)
+        form = AnswerForm(request.POST, instance=answer)
         if form.is_valid():
             answer = form.save(commit=False)
             answer.author = request.user
@@ -70,44 +70,57 @@ def question_content(request, pk):
             client.publish('answers_question_{}'.format(question.pk), {})
             client.send()
 
+            # return json.loads(serialize('json', [context['question']]))
             return redirect('questions:question_content', pk=question.id)
         else:
             context['form'] = form
-            # return JsonResponse({'categories': serialize('json', question.categories.all()),
-            #                     'question': serialize('json', [question]),
-            #                     'answers': serialize('json', answers)})
+            # return json.loads(serialize('json', [context['question']]))
             return render(request, 'questions/question_content.html', context)
 
 
+# @jsonrpc_method('api.question_list')
+# def question_list(request):
+#     context = {
+#         'questions': Question.objects.all().order_by("-created").annotate_manager().filt_del(request.user),
+#     }
+#     return json.loads(serialize('json', context['questions']))
 
 
-@jsonrpc_method('api.question_list')
+def question_list_front(request):
+    context = {
+        'questions': serialize('json', Question.objects.all().order_by("-created").filter(is_archive=False)),
+    }
+    return JsonResponse(context)
+
+
 def question_list(request):
     context = {
         'questions': Question.objects.all().order_by("-created").annotate_manager().filt_del(request.user),
     }
-
     return render(request, 'questions/question_list.html', context)
-
 
 
 @jsonrpc_method('api.question_comments')
 def question_comments(request, pk):
     question = get_object_or_404(Question, id=pk)
     answers = question.answers.all()
-    # context = {
-    #     'categories': serialize('json', question.categories.all()),
-    #     'question':  serialize('json', [question]),
-    #     'answers': serialize('json', answers.order_by('created')),
-    # }
-    #return JsonResponse(context)
-
     context = {
         'categories': question.categories.all(),
-        'question': question,
+        'question':  question,
         'answers': answers.order_by('created'),
     }
-    return render(request, 'questions/commentsdiv.html', context)
+    return json.loads(serialize('json', context['answers']))
+
+
+# def question_comments(request, pk):
+    # question = get_object_or_404(Question, id=pk)
+    # answers = question.answers.all()
+    # context = {
+    #     'categories': question.categories.all(),
+    #     'question': question,
+    #     'answers': answers.order_by('created'),
+    # }
+    # return render(request, 'questions/commentsdiv.html', context)
 
 
 class AnswerForm(forms.ModelForm):

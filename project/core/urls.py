@@ -15,5 +15,7 @@ urlpatterns = [
     url(r'^register/$', core_views.register, name='register'),
     url(r'^profile/$', login_required(core_views.profile), name='profile'),
 
+    url(r'^login_front/$', core_views.login_front, name='login_front'),
+
     url(r'^api/$', jsonrpc_site.dispatch, name='api'),
 ]
